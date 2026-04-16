@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disney Mini Game - Catch Mickey</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: linear-gradient(to bottom, #87ceeb, #fff);
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        margin-top: 20px;
+        color: #333;
+    }
+
+    #gameArea {
+        position: relative;
+        width: 90%;
+        max-width: 600px;
+        height: 400px;
+        margin: 20px auto;
+        border: 3px solid #333;
+        border-radius: 15px;
+        background-color: #fdf5e6;
+        overflow: hidden;
+    }
+
+    #mickey {
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    cursor: pointer;
+    filter: drop-shadow(0 0 10px gold);
+    transition: transform 0.1s;
+}
+
+#mickey:active {
+    transform: scale(1.2);
+}
+    #info {
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 10px;
+        background-color: #ff4d4d;
+        color: white;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background-color: #cc0000;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>🎯 Catch Mickey!</h1>
+
+<div id="info">
+    Score: <span id="score">0</span> | Time: <span id="time">20</span>
+</div>
+
+<button onclick="startGame()">Start Game</button>
+
+<div id="gameArea">
+    <img id="mickey" src="assets/img/realmickey.png" alt="Mickey">
+</div>
+
+<script>
+let score = 0;
+let timeLeft = 20;
+let gameInterval;
+let moveInterval;
+const mickey = document.getElementById("mickey");
+const gameArea = document.getElementById("gameArea");
+
+mickey.style.display = "none";
+
+function startGame() {
+    score = 0;
+    timeLeft = 20;
+
+    document.getElementById("score").textContent = score;
+    document.getElementById("time").textContent = timeLeft;
+
+    mickey.style.display = "block";
+
+    moveMickey();
+
+    moveInterval = setInterval(moveMickey, 800);
+
+    gameInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById("time").textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+            endGame();
+        }
+    }, 1000);
+}
+
+function moveMickey() {
+    const maxX = gameArea.clientWidth - 60;
+    const maxY = gameArea.clientHeight - 60;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    mickey.style.left = randomX + "px";
+    mickey.style.top = randomY + "px";
+}
+
+mickey.addEventListener("click", () => {
+    score++;
+    document.getElementById("score").textContent = score;
+    moveMickey();
+});
+
+function endGame() {
+    clearInterval(gameInterval);
+    clearInterval(moveInterval);
+    mickey.style.display = "none";
+
+    alert("Time's up! Your score: " + score);
+}
+</script>
+
+</body>
+</html>
+```
